@@ -1,13 +1,14 @@
 const express = require('express');
-const axios = require('axios');
 const fetch = require('node-fetch');
 require('dotenv').config();
+const cors = require('cors');
 
 // Initialize the app and create a port
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Set up body parsing, static, and route middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -15,10 +16,6 @@ app.use(express.static('public'));
 app.post("/api", async (req, res) => {
 
   try {
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-
     const { url, bodyContent } = req.body;
 
     if (!url) {
@@ -46,6 +43,7 @@ app.post("/api", async (req, res) => {
   }
 
 });
+
 
 // Start the server on the port
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
