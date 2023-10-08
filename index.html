@@ -9,7 +9,7 @@
 
 <body>
 
-  <script>
+  <!-- <script>
     const localUrl = 'http://localhost:3001/api';
 
     const deployedUrl = 'https://shielded-tundra-06273-a31f4de96ab9.herokuapp.com/api';
@@ -29,6 +29,39 @@
             url: url,
             bodyContent: bodyContent,
           }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  </script> -->
+  <script>
+    const localUrl = 'http://localhost:3001/api';
+
+    const deployedUrl = 'https://shielded-tundra-06273-a31f4de96ab9.herokuapp.com/api';
+
+    const fetchData = async () => {
+      const searchQuery = encodeURIComponent('Super Mario');
+      // const url = `https://api.igdb.com/v4/games/?search=${searchQuery}&fields=name,genres,artworks,cover,first_release_date,platforms,summary`;
+
+      const fields = 'name,genres,artworks,cover,first_release_date,platforms,summary';
+      const url = `https://api.igdb.com/v4/games/`;
+
+      const urlForFetch = `${localUrl}?url=${url}&searchQuery=${searchQuery}&fields=${fields}`;
+
+      console.log(urlForFetch);
+
+      try {
+        const response = await fetch(urlForFetch, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
 
         const data = await response.json();

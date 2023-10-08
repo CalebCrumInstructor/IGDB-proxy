@@ -44,6 +44,38 @@ app.post("/api", async (req, res) => {
 
 });
 
+app.get("/api", async (req, res) => {
+
+  try {
+
+    const { url, fields, searchQuery } = req.query;
+
+    if (!url) {
+      return res.status(400).json({ message: "url parameter is required" });
+    }
+
+    const searchUrl = `${url}?search=${searchQuery}&fields=${fields}`
+
+    const resData = await fetch(searchUrl, {
+      method: 'GET',
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.CLIENT_ID,
+        'Authorization': `Bearer ${process.env.IGDB_API_KEY}`,
+        'Content-Type': "text/plain"
+      },
+    });
+
+    const data = await resData.json();
+
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err.response.data);
+  }
+
+});
 
 // Start the server on the port
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
